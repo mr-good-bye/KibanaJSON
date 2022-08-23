@@ -29,6 +29,8 @@ def create_name(host: str, timestamp: str):
     tt = timestamp.maketrans(t1, t2)
     timestamp = timestamp.translate(tt)
     _timestamp = timestamp.split('-')  # ['2022', '08', '15T10', '50', '12.413Z']
+    if len(timestamp) < 6:
+        return f"__{host}__{input('Enter error name: ')}"
     timestamp = {
         'year': int(_timestamp[0]),
         'month': int(_timestamp[1]),
@@ -41,7 +43,6 @@ def create_name(host: str, timestamp: str):
 
         timestamp['hour'] -= 24
         timestamp['day'] += 1
-        # TODO: Maybe if day > 30/31/28/29 => month++?
     res = f"{timestamp['year']}.{timestamp['month']}.{timestamp['day']}"
     res += f"__{timestamp['hour']}-{timestamp['minute']}-{timestamp['seconds']}"
     res += f"__{host}"
